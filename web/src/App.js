@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Hompepage from "./theme/container/hompepage";
 import "bootstrap/dist/css/bootstrap.css";
 import Table from "./theme/container/table";
 
