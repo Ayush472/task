@@ -6,27 +6,29 @@ import Pagination from "../components/pagination";
 import "./../assets/css/table.css";
 import ApexSingleLineChart from "../components/ApexSingleLineChart";
 import Popup from "reactjs-popup";
+import moment from "moment";
 
 export default function Table() {
   const [users, setUsers] = useState([]);
   const [currentUsers, setCurrentUsers] = useState([]);
   const [chartData, setChartsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage, setRecordsPerPage] = useState(5);
+  const [recordsPerPage, setRecordsPerPage] = useState(20);
   const [search, setSearch] = useState("");
   const [productdata, setproductData] = useState([]);
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
   const records = users.slice(firstIndex, lastIndex);
-  const numOfPage = Math.ceil(productdata.length / recordsPerPage);
+  const numOfPage = Math.ceil(users.length / recordsPerPage);
   const numbers = [...Array(numOfPage + 1).keys()].slice(1);
   const [open, setOpen] = useState(false);
-
+  const [shouldShowChart, setShouldShowChart] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const fetchInfo = async () => {
     fetch("/api/transactions")
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
+        console.log(json, "data");
         setCurrentUsers(json.data.transactions);
         setUsers(json.data.transactions);
       })
@@ -122,72 +124,81 @@ export default function Table() {
   return (
     <>
       <div className="container bg-light">
-        <SearchBar
+        {/* <SearchBar
           search={search}
           handleSearchInput={handleSearchInput}
           handleSearchBtn={handleSearchBtn}
           handleResetBtn={handleResetBtn}
-        />
+        /> */}
         <div className="row flex-wrap">
           <div className="col-lg-9 col-md-12 col-sm-12">
-            <h2 className="table-heading">Users Table:</h2>
-            <table className="table bordered-table border-dark table-striped text-center">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">
-                    <AscendingSort
-                      field="product_purchased"
-                      handleSort={handleSort}
-                    />
-                    Product Purchased
-                    <DescendingSort
-                      field="product_purchased"
-                      handleSort={handleSort}
-                    />
-                  </th>
-                  <th scope="col">Prod</th> <th scope="col">Quantity</th>{" "}
-                  <th scope="col"> Sales Percentage</th>
-                </tr>
-              </thead>
-              <tbody>
-                {records.map((user, index) => (
-                  <tr
-                    key={index}
-                    title={index + 1 + (currentPage - 1) * recordsPerPage}
-                  >
-                    <th scope="row">{user.customer_id}</th>
-                    <td>{user.product_purchased}</td>
-                    <td>
-                      {" "}
-                      <button
-                        type="button"
-                        className="button"
-                        onClick={() => {
-                          getPopUpChart(user.chartData);
-                        }}
-                      >
-                        {user.product_purchased}
-                      </button>
-                    </td>
-
-                    <td>{user.quantity}</td>
-                    <td>{user.sales} %</td>
-                  </tr>
-                ))}
-              </tbody>
-
-              <div>
+            Customers Transaction Details
+            <div className="row">
+              <div className="col-lg-4">
                 <ul>
-                  <li>#</li>
-                  <li>Name</li>
-                </ul>
-                <ul>
-                  {/* <li></li>
-                  <li>{users.name}</li> */}
+                  {records.map((user, index) => (
+                    <li
+                      onClick={() => {
+                        setSelectedCustomer(user);
+                        setShouldShowChart(false);
+                      }}
+                      key={index}
+                    >
+                      <span>{user.customer_id} </span>
+                      <span>{user.customer_name}</span>{" "}
+                    </li>
+                  ))}
                 </ul>
               </div>
-            </table>
+              <div className="col-lg-8">
+                {selectedCustomer && (
+                  <div className="card">
+                    <div>
+                      <span>Customer Id : </span>
+                      <span> {selectedCustomer.customer_id}</span>
+                    </div>
+                    <div>
+                      <span>Customer Name : </span>
+                      <span> {selectedCustomer.customer_name}</span>
+                    </div>
+                    <div
+                      onClick={() => {
+                        setShouldShowChart(!shouldShowChart);
+                      }}
+                    >
+                      <span>Product Name : </span>
+                      <span> {selectedCustomer.product_purchased}</span>
+                    </div>
+                    <div>
+                      <span>Quantity : </span>
+                      <span> {selectedCustomer.quantity}</span>
+                    </div>
+                    <div>
+                      <span>Date Of Purchase : </span>
+                      <span>
+                        {" "}
+                        {moment(selectedCustomer.month_year).format(
+                          " DD-MM-YYYY"
+                        )}
+                      </span>
+                    </div>
+                    {shouldShowChart && (
+                      <div style={{ overflow: "auto" }}>
+                        <ApexSingleLineChart
+                          series={[
+                            {
+                              name: selectedCustomer.chartData.name,
+                              data: selectedCustomer.chartData.data,
+                            },
+                          ]}
+                          labels={selectedCustomer.chartData.labels}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
             <Pagination
               currentPage={currentPage}
               totalPages={numOfPage}

@@ -23,8 +23,10 @@ const ApexSingleLineChart = ({ series, labels }) => {
     },
     colors: ["#50CD89", "#D32F2F", "#FFD02B"],
     yaxis: {
-      formatter: (value) => {
-        return `${value} %`;
+      labels: {
+        formatter: (value) => {
+          return `${value} %`;
+        },
       },
     },
     legend: {

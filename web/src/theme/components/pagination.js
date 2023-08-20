@@ -8,7 +8,7 @@ const Pagination = ({
   changePage,
 }) => {
   return (
-    <nav className="d-flex justify-content-center">
+    <nav className="d-flex justify-content-center ">
       <ul className="pagination">
         <li className="page-item">
           <a
