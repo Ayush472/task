@@ -1,5 +1,5 @@
 import React from "react";
-import "./../assets/css/table.css";
+import "./../assets/css/homepage.css";
 const AscendingSort = ({ field, handleSort }) => {
   return (
     <button

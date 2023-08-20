@@ -3,12 +3,12 @@ import AscendingSort from "../components/AscendingSort";
 import DescendingSort from "../components/Descending ";
 import SearchBar from "../components/filter";
 import Pagination from "../components/pagination";
-import "./../assets/css/table.css";
+import "./../assets/css/homepage.css";
 import ApexSingleLineChart from "../components/ApexSingleLineChart";
 import Popup from "reactjs-popup";
 import moment from "moment";
 
-export default function Table() {
+export default function Homepage() {
   const [users, setUsers] = useState([]);
   const [currentUsers, setCurrentUsers] = useState([]);
   const [chartData, setChartsData] = useState([]);
