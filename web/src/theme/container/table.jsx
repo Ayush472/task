@@ -19,11 +19,11 @@ export default function Table() {
   const numbers = [...Array(numOfPage + 1).keys()].slice(1);
 
   const fetchInfo = () => {
-    fetch("https://dummyjson.com/users")
+    fetch("http://localhost:3001/api/transactions")
       .then((response) => response.json())
       .then((json) => {
-        setCurrentUsers(json.users);
-        setUsers(json.users);
+        setCurrentUsers(json.data);
+        setUsers(json.data);
       })
       .finally(() => {});
   };
@@ -151,29 +151,15 @@ export default function Table() {
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">
-                    <AscendingSort field="firstName" handleSort={handleSort} />
-                    First
-                    <DescendingSort field="firstName" handleSort={handleSort} />
-                  </th>
-                  <th scope="col">
-                    <AscendingSort field="lastName" handleSort={handleSort} />
-                    Last
-                    <DescendingSort field="lastName" handleSort={handleSort} />
-                  </th>
-                  <th scope="col">
-                    <AscendingSort field="age" handleSort={handleSort} />
-                    Age
-                    <DescendingSort field="age" handleSort={handleSort} />
-                  </th>
-                  <th scope="col">
-                    <AscendingSort field="eyeColor" handleSort={handleSort} />
-                    Eye Color
-                    <DescendingSort field="eyeColor" handleSort={handleSort} />
-                  </th>
-                  <th scope="col">
-                    <AscendingSort field="phone" handleSort={handleSort} />
-                    Phone
-                    <DescendingSort field="phone" handleSort={handleSort} />
+                    <AscendingSort
+                      field="product_purchased"
+                      handleSort={handleSort}
+                    />
+                    Product Purchased
+                    <DescendingSort
+                      field="product_purchased"
+                      handleSort={handleSort}
+                    />
                   </th>
                 </tr>
               </thead>
@@ -183,12 +169,8 @@ export default function Table() {
                     key={index}
                     title={index + 1 + (currentPage - 1) * recordsPerPage}
                   >
-                    <th scope="row">{user.id}</th>
-                    <td>{user.firstName}</td>
-                    <td>{user.lastName}</td>
-                    <td>{user.age}</td>
-                    <td>{user.eyeColor}</td>
-                    <td>{user.phone}</td>
+                    <th scope="row">{index + 1}</th>
+                    <td>{user.product_purchased}</td>
                   </tr>
                 ))}
               </tbody>
