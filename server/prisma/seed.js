@@ -2,12 +2,14 @@ const { faker } = require("@faker-js/faker");
 const { prisma } = require("./client");
 
 async function main() {
-  const transactions = Array.from(Array(15).keys()).map((i) => ({
-    product_purchased: faker.commerce.productName(),
+  const products =  Array.from(Array(5).keys()).map(i=>faker.commerce.productName())
+  const transactions = Array.from(Array(100).keys()).map((i) => ({
+    product_purchased: faker.helpers.arrayElement(products),
     quantity: faker.number.int({ max: 10 }),
     sales: faker.number.float({ max: 100 }),
     month_year: faker.date.past({ years: 10 }),
   }));
+
   const res = await prisma.transaction.createMany({
     data: transactions,
     skipDuplicates: true,

@@ -7,7 +7,7 @@ class TransactionsController {
       const transactions = await prisma.transaction.findMany();
       res
         .status(STATUS_SUCCESSFUL)
-        .json(success(transactions));
+        .json(success({count : transactions.length, transactions}));
     } catch (err) {
       next(err);
     }
