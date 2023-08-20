@@ -4,20 +4,20 @@ import DescendingSort from "../components/Descending ";
 import SearchBar from "../components/filter";
 import Pagination from "../components/pagination";
 import "./../assets/css/table.css";
-import ReactApexChart from "react-apexcharts";
 import ApexSingleLineChart from "../components/ApexSingleLineChart";
 import Popup from "reactjs-popup";
 
 export default function Table() {
   const [users, setUsers] = useState([]);
   const [currentUsers, setCurrentUsers] = useState([]);
+  const [chartData, setChartsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(5);
   const [search, setSearch] = useState("");
   const [productdata, setproductData] = useState([]);
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = productdata.slice(firstIndex, lastIndex);
+  const records = users.slice(firstIndex, lastIndex);
   const numOfPage = Math.ceil(productdata.length / recordsPerPage);
   const numbers = [...Array(numOfPage + 1).keys()].slice(1);
   const [open, setOpen] = useState(false);
@@ -27,7 +27,6 @@ export default function Table() {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-
         setCurrentUsers(json.data.transactions);
         setUsers(json.data.transactions);
       })
@@ -74,7 +73,6 @@ export default function Table() {
       alert("Nothing Found");
     } else {
       setCurrentUsers(filteredUsers);
-      data();
     }
   };
 
@@ -102,15 +100,10 @@ export default function Table() {
   }, []);
 
   var ids = [];
-  const getPopUpChart = (productName) => {
-    return (
-      <Popup open={open} closeOnDocumentClick onClose={() => setOpen(!open)}>
-        <ApexSingleLineChart
-          series={currentUsers.series}
-          labels={currentUsers.labels}
-        />
-      </Popup>
-    );
+  const getPopUpChart = (chartData) => {
+    console.log(chartData);
+    setOpen(!open);
+    setChartsData(chartData);
   };
   useEffect(() => {
     var ar = users.filter(function (o) {
@@ -126,7 +119,6 @@ export default function Table() {
     });
     setproductData(ar);
   }, [users]);
-  // console.log(eyeColorsArr, "eyecolorsArr");
   return (
     <>
       <div className="container bg-light">
@@ -154,6 +146,8 @@ export default function Table() {
                       handleSort={handleSort}
                     />
                   </th>
+                  <th scope="col">Prod</th> <th scope="col">Quantity</th>{" "}
+                  <th scope="col"> Sales Percentage</th>
                 </tr>
               </thead>
               <tbody>
@@ -169,16 +163,30 @@ export default function Table() {
                       <button
                         type="button"
                         className="button"
-                        onClick={() => setOpen((o) => !o)}
+                        onClick={() => {
+                          getPopUpChart(user.chartData);
+                        }}
                       >
                         {user.product_purchased}
                       </button>
                     </td>
 
-                    <td></td>
+                    <td>{user.quantity}</td>
+                    <td>{user.sales} %</td>
                   </tr>
                 ))}
               </tbody>
+
+              <div>
+                <ul>
+                  <li>#</li>
+                  <li>Name</li>
+                </ul>
+                <ul>
+                  {/* <li></li>
+                  <li>{users.name}</li> */}
+                </ul>
+              </div>
             </table>
             <Pagination
               currentPage={currentPage}
@@ -188,6 +196,16 @@ export default function Table() {
               changePage={changeCPage}
             />
           </div>
+          <Popup
+            open={open}
+            closeOnDocumentClick
+            onClose={() => setOpen(!open)}
+          >
+            <ApexSingleLineChart
+              series={[{ name: chartData.name, data: chartData.data }]}
+              labels={chartData.labels}
+            />
+          </Popup>
         </div>
       </div>
     </>
