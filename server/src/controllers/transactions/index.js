@@ -11,6 +11,7 @@ class TransactionsController {
         transactions.map(async (i, index) => {
           const products = await prisma.transaction.groupBy({
             by: "month_year",
+            orderBy : { month_year : 'asc'},
             where: { product_purchased: { equals: i.product_purchased } },
             _avg: {
               sales: true,
