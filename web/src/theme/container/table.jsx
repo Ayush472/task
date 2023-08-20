@@ -17,8 +17,13 @@ export default function Table() {
   const records = currentUsers.slice(firstIndex, lastIndex);
   const numOfPage = Math.ceil(currentUsers.length / recordsPerPage);
   const numbers = [...Array(numOfPage + 1).keys()].slice(1);
-
+const [transaction, setTransaction] = useState([])
+console.log(transaction, "LOOK ME") 
   const fetchInfo = () => {
+    fetch('/api/transactions').then(res=>res.json()).then(res=>{
+      console.log("Fetched")
+      setTransaction(res.transactions)
+    })
     fetch("http://localhost:3001/api/transactions")
       .then((response) => response.json())
       .then((json) => {
