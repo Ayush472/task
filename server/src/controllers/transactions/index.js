@@ -16,7 +16,6 @@ class TransactionsController {
               sales: true,
             },
           });
-          // if (index === 10) {
           const groupedTransactions = _.groupBy(
             products.map((i) => ({
               ...i,
@@ -26,10 +25,9 @@ class TransactionsController {
           );
           const labels = Object.keys(groupedTransactions);
           const data = Object.values(groupedTransactions).map((i) =>
-            i.reduce((prev, current) => (prev + current._avg.sales) / 2, 0)
+            i.reduce((prev, current) => ((prev + current._avg.sales) / 2).toFixed(2), 0)
           );
 
-          // }
           return {
             ...i,
             chartData: {
@@ -42,7 +40,12 @@ class TransactionsController {
       );
       res
         .status(STATUS_SUCCESSFUL)
-        .json(success({ count: transactions.length, transactions : augmentedTransactions }));
+        .json(
+          success({
+            count: transactions.length,
+            transactions: augmentedTransactions,
+          })
+        );
     } catch (err) {
       next(err);
     }
