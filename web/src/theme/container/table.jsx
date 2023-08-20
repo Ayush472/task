@@ -23,7 +23,7 @@ export default function Table() {
   const [open, setOpen] = useState(false);
 
   const fetchInfo = async () => {
-    fetch("http://localhost:3001/api/transactions")
+    fetch("/api/transactions")
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
