@@ -13,6 +13,7 @@ datasource db {
 model Transaction {
   customer_id    Int    @id @default(autoincrement())
   product_purchased  String
+  customer_name  String @unique()
   quantity Int
   sales Decimal @db.Decimal(10,2)
   month_year DateTime
