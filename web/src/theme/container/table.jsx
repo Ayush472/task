@@ -132,7 +132,7 @@ export default function Table() {
         /> */}
         <div className="row flex-wrap">
           <div className="col-lg-9 col-md-12 col-sm-12">
-            Customers Transaction Details
+            <h4 className="text-center">Customers Transaction Details</h4>
             <div className="row">
               <div className="col-lg-4">
                 <ul>
@@ -152,36 +152,41 @@ export default function Table() {
               </div>
               <div className="col-lg-8">
                 {selectedCustomer && (
-                  <div className="card">
-                    <div>
-                      <span>Customer Id : </span>
-                      <span> {selectedCustomer.customer_id}</span>
+                  <div>
+                    <div className="card">
+                      <div>
+                        <span className="card-heading">Customer Id : </span>
+                        <span> {selectedCustomer.customer_id}</span>
+                      </div>
+                      <div>
+                        <span className="card-heading">Customer Name : </span>
+                        <span> {selectedCustomer.customer_name}</span>
+                      </div>
+                      <div
+                        onClick={() => {
+                          setShouldShowChart(!shouldShowChart);
+                        }}
+                      >
+                        <span className="card-heading">Product Name : </span>
+                        <span> {selectedCustomer.product_purchased}</span>
+                      </div>
+                      <div>
+                        <span className="card-heading">Quantity : </span>
+                        <span> {selectedCustomer.quantity}</span>
+                      </div>
+                      <div>
+                        <span className="card-heading">
+                          Date Of Purchase :{" "}
+                        </span>
+                        <span>
+                          {" "}
+                          {moment(selectedCustomer.month_year).format(
+                            " DD-MM-YYYY"
+                          )}
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <span>Customer Name : </span>
-                      <span> {selectedCustomer.customer_name}</span>
-                    </div>
-                    <div
-                      onClick={() => {
-                        setShouldShowChart(!shouldShowChart);
-                      }}
-                    >
-                      <span>Product Name : </span>
-                      <span> {selectedCustomer.product_purchased}</span>
-                    </div>
-                    <div>
-                      <span>Quantity : </span>
-                      <span> {selectedCustomer.quantity}</span>
-                    </div>
-                    <div>
-                      <span>Date Of Purchase : </span>
-                      <span>
-                        {" "}
-                        {moment(selectedCustomer.month_year).format(
-                          " DD-MM-YYYY"
-                        )}
-                      </span>
-                    </div>
+
                     {shouldShowChart && (
                       <div style={{ overflow: "auto" }}>
                         <ApexSingleLineChart
@@ -199,26 +204,17 @@ export default function Table() {
                 )}
               </div>
             </div>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={numOfPage}
-              prePage={prePage}
-              nextPage={nextPage}
-              changePage={changeCPage}
-            />
           </div>
-          <Popup
-            open={open}
-            closeOnDocumentClick
-            onClose={() => setOpen(!open)}
-          >
-            <ApexSingleLineChart
-              series={[{ name: chartData.name, data: chartData.data }]}
-              labels={chartData.labels}
-            />
-          </Popup>
         </div>
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={numOfPage}
+        prePage={prePage}
+        nextPage={nextPage}
+        changePage={changeCPage}
+      />
     </>
   );
 }

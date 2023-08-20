@@ -3,11 +3,24 @@
     /* text-align: center; */
     background: #edeeec;
     border-radius: 30px;
-    font-size: 25px;
+    font-size: 20px;
     /* transition: width 2s ease-in; */
 
   }
 
 .container{
   margin-top: 10vmin;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.card-heading{
+  font-weight: 500;
+
+}
+.col-lg-8{
+  min-width: 40vw;
+}
+.col-lg-4{
+  min-width: 10vw;
 }

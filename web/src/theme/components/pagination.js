@@ -14,7 +14,7 @@ const Pagination = ({
           <a
             className={
               "page-link bg-light border-dark " +
-              (currentPage === 1 ? "disabled_link" : "")
+              (currentPage === 1 ? "disabled_link  " : "")
             }
             onClick={prePage}
           >
